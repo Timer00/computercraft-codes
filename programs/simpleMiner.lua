@@ -2,15 +2,23 @@ local checkAndRefuel = require("/code/lib/checkAndRefuel").checkAndRefuel
 
 os.setComputerLabel("SimpleMiner")
 
-print("Refueled: ", checkAndRefuel(80))
+print("Please insert the number of blocks to mine in this direction:")
+
+local blocksToMine = tonumber(read())
+
+assert(blocksToMine, "Invalid input. Please enter a positive number.")
+
+-- Ensure the miner has enough fuel for the trip there and back
+blocksToMine = blocksToMine * 2
+print("Fueled: ", checkAndRefuel(blocksToMine + 1))
 
 local currentFuelLevel = turtle.getFuelLevel()
 
-if (currentFuelLevel < 10) then
-    return "Please add fuel."
+if (currentFuelLevel < blocksToMine) then
+    return "Please add more fuel."
 end
 
-local maximumDistance = (currentFuelLevel / 2) - 1 -- How far can the turtle go and still be able to come back
+local maximumDistance = blocksToMine / 2 -- How far can the turtle go and still be able to come back
 
 print("Will mine ", maximumDistance, " blocks in the facing direction.")
 
